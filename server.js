@@ -5,9 +5,8 @@ const port = 3002;
 app.use(express.json());
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
+app.use(express.json());
+app.use(express.static('public'));
 
 const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);
