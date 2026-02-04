@@ -1,12 +1,16 @@
 {
-  "name": "projet-app2",
+  "name": "projetapp",
   "version": "1.0.0",
-  "description": "Deuxième serveur Express",
-  "main": "server2.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node server2.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^5.2.1",
+    "mysql2": "^3.16.1"
   }
 }
