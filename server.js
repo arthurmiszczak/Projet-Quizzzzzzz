@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const port = 3002;
-const langlace = null;
 
 app.use(express.json());
 app.use(express.static('public'));
