@@ -1,20 +1,23 @@
 const express = require('express');
-const db = require('./db'); // Import de la connexion BDD
 const app = express();
+const mysql = require('mysql2');
 const port = 3002;
+const connection = mysql.createConnection({
+    host: '172.29.18.116',
+    user: 'Demo',
+    password: 'Demo',
+    database: 'BddArthur',
+});
+
+console.log('Connexion réussie à la base de données');
+
+connection.on('error', (err) => {
+    console.error('Erreur connexion MySQL:', err);
+});
 
 app.use(express.json());
 app.use(express.static('public'));
 
-// Route de test pour vérifier la connexion BDD
-app.get('/test-db', (req, res) => {
-    db.query('SELECT 1 + 1 AS result', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: 'Erreur BDD', details: err });
-        }
-        res.json({ message: 'Connexion BDD OK!', result: results[0].result });
-    });
-});
 
 const server = app.listen(port, () => {
     console.log(`🚀 Server running on http://localhost:${port}`);
