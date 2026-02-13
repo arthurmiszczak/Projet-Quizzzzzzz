@@ -47,3 +47,15 @@ app.post('/register', (req, res) => {
       }
     );
 });
+
+
+app.get('/users', (req, res) => {
+    connection.query('SELECT * FROM Users', (err, results) => {
+        if (err) {
+            console.error('Erreur lors de la récupération des utilisateurs :', err);
+            res.status(500).json({ message: 'Erreur serveur' });
+            return;
+        }
+        res.json(results);
+    });
+});
