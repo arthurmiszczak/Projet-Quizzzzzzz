@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const forms = document.querySelectorAll('.auth-form');
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
-    const monInput = document.getElementById('monInput');
-    const monInput2 = document.getElementById('monInput2');
-    const monBouton = document.getElementById('monBouton');
-    const monBouton2 = document.getElementById('monBouton2');
+    const Inputlogin = document.getElementById('login');
+    const Inputpassword = document.getElementById('password');
+    const loginButton = document.getElementById('monBouton');
+    const signupButton = document.getElementById('monBouton2');
 
     // Gestion des tabs
     tabBtns.forEach(btn => {
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ login: monInput.value, password: monInput2.value })
+            body: JSON.stringify({ login: Inputlogin.value, password: Inputpassword.value })
         }).then(response => response.text())
             .then(data => {
                 alert(data);
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ login: monInput.value, password: monInput2.value })
+            body: JSON.stringify({ login: Inputlogin.value, password: Inputpassword.value })
         }).then(response => response.text())
             .then(data => {
                 alert(data);
