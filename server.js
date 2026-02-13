@@ -59,3 +59,22 @@ app.get('/users', (req, res) => {
         res.json(results);
     });
 });
+
+
+
+app.post('/connexion', (req, res) => {  
+  const { login, password } = req.body;
+  connection.query('SELECT * FROM Users WHERE login = ? AND password = ?', [login, password], (err, results) => {
+      if (err) {
+        console.error('Erreur lors de la vérification des identifiants :', err);
+        res.status(500).json({ message: 'Erreur serveur' });
+        return;
+      }
+      if (results.length === 0) {
+        res.status(401).json({ message: 'Identifiants invalides' });
+        return;
+      }
+      // Identifiants valides 
+      res.json({ message: 'Connexion réussie !', user: results[0] });
+    });
+});
