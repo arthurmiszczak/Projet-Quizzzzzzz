@@ -1,12 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='main.css'>
     <title>Projet-Quizzzzzzz</title>
 </head>
 <body>
-    <h1>Welcome to Projet-Quizzzzzzz</h1>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Projet-Quizzzzzzz</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text"><span id="currentQuestion">1</span> / <span id="totalQuestions">5</span></p>
+        </div>
+
+        <div class="quiz-content">
+            <div id="quizBox" class="quiz-box">
+                <h2 id="questionText" class="question"></h2>
+                <div id="optionsContainer" class="options-container"></div>
+            </div>
+
+            <div id="resultBox" class="result-box hidden">
+                <h2>Quiz Terminé!</h2>
+                <div class="score">
+                    <p class="score-text">Votre score:</p>
+                    <p class="score-value"><span id="finalScore">0</span>/<span id="maxScore">0</span></p>
+                </div>
+                <p class="result-percentage"><span id="percentage">0</span>%</p>
+                <button id="restartBtn" class="btn-restart">Recommencer</button>
+            </div>
+        </div>
+
+        <div class="quiz-footer">
+            <button id="prevBtn" class="btn-nav" disabled>← Précédent</button>
+            <button id="nextBtn" class="btn-nav">Suivant →</button>
+        </div>
+    </div>
+
+    <script src='main.js'></script>
 </body>
-<script src='main.js'></script>
 </html>
