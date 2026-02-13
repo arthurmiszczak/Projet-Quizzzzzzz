@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const signupForm = document.getElementById('signupForm');
     const Inputlogin = document.getElementById('login');
     const Inputpassword = document.getElementById('password');
-    const loginButton = document.getElementById('monBouton');
-    const signupButton = document.getElementById('monBouton2');
+    const monBouton = document.getElementById('monBouton');
+    const monBouton2 = document.getElementById('monBouton2');
 
     // Gestion des tabs
     tabBtns.forEach(btn => {
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Gestion des formulaires
-    loginForm.addEventListener('click', () => {
+    monBouton2.addEventListener('click', () => {
         fetch('/register', {
             method: 'POST',
             headers: {
@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
-    signupForm.addEventListener('click', () => {
-        fetch('/connect', {
+    monBouton.addEventListener('click', () => {
+        fetch('/connexion', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
