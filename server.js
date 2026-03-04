@@ -32,6 +32,12 @@ server.on('error', (err) => {
 app.post('/register', (req, res) => {
     console.log('Données reçues pour l\'inscription');
     console.log(req.body);
+    const { login, password } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(login)) {
+        res.status(400).json({ message: 'Email invalide, il doit contenir un @' });
+        return;
+    }
 
     connection.query(
       'INSERT INTO Users (login, password) VALUES (?, ?)',

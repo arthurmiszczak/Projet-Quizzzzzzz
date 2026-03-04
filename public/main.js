@@ -32,20 +32,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Gestion des formulaires
-    monBouton2.addEventListener('click', () => {
+    monBouton2.addEventListener('click', (e) => {
+        e.preventDefault();
         fetch('/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ login: Inputlogin2.value, password: Inputpassword2.value })
-        }).then(response => response.text())
+        }).then(response => response.json())
             .then(data => {
-                reponse.textContent = data;
+                alert(data.message);
             });
     });
 
-    monBouton.addEventListener('click', () => {
+    monBouton.addEventListener('click', (e) => {
+        e.preventDefault();
         console.log('login:', Inputlogin.value, 'password:', Inputpassword.value);
         console.log('login envoyé:', JSON.stringify(Inputlogin.value.trim()));
         console.log('password envoyé:', JSON.stringify(Inputpassword.value.trim()));
