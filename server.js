@@ -35,7 +35,7 @@ app.post('/register', (req, res) => {
 
     connection.query(
       'INSERT INTO Users (login, password) VALUES (?, ?)',
-      [req.body.input, req.body.password],
+      [req.body.login, req.body.password],
       (err, results) => {
         if (err) {
           console.error('Erreur lors de l\'insertion dans la base de données :', err);

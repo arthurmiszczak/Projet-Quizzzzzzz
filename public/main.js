@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const signupForm = document.getElementById('signupForm');
     const Inputlogin = document.getElementById('login');
     const Inputpassword = document.getElementById('password');
+    const Inputlogin2 = document.getElementById('login2');
+    const Inputpassword2 = document.getElementById('password2');
     const monBouton = document.getElementById('monBouton');
     const monBouton2 = document.getElementById('monBouton2');
 
@@ -36,25 +38,27 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ login: Inputlogin.value, password: Inputpassword.value })
+            body: JSON.stringify({ login: Inputlogin2.value, password: Inputpassword2.value })
         }).then(response => response.text())
             .then(data => {
-                alert(data);
-                authModal.classList.add('hidden');
+                reponse.textContent = data;
             });
     });
 
     monBouton.addEventListener('click', () => {
+        console.log('login:', Inputlogin.value, 'password:', Inputpassword.value);
+        console.log('login envoyé:', JSON.stringify(Inputlogin.value.trim()));
+        console.log('password envoyé:', JSON.stringify(Inputpassword.value.trim()));
         fetch('/connexion', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ login: Inputlogin.value, password: Inputpassword.value })
+            body: JSON.stringify({ login: Inputlogin.value.trim(), password: Inputpassword.value.trim() })
         }).then(response => response.json())
             .then(data => {
-                alert(data);
-                authModal.classList.add('hidden');
+                alert(data.message);
+                alert('ID utilisateur : ' + data.user.id);
                 localStorage.setItem('userId', data.user.id);
                 
             });
