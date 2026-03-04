@@ -3,7 +3,7 @@ const app = express();
 const mysql = require('mysql2');
 const port = 3002;
 const connection = mysql.createConnection({
-    host: '172.29.18.116',
+    host: '172.29.16.164',
     user: 'Demo',
     password: 'Demo',
     database: 'BddQuizz',
