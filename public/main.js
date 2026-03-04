@@ -51,10 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ login: Inputlogin.value, password: Inputpassword.value })
-        }).then(response => response.text())
+        }).then(response => response.json())
             .then(data => {
                 alert(data);
                 authModal.classList.add('hidden');
+                localStorage.setItem('userId', data.user.id);
+                
             });
     });
 });

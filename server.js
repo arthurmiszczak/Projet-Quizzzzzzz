@@ -76,5 +76,6 @@ app.post('/connexion', (req, res) => {
       }
       // Identifiants valides 
       res.json({ message: 'Connexion réussie !', user: results[0] });
+      
     });
 });
