@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data.message);
                 alert('ID utilisateur : ' + data.user.id);
                 localStorage.setItem('userId', data.user.id);
+                authModal.classList.add('hidden');
                 
             });
     });
