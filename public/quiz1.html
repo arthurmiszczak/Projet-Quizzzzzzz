@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='main.css'>
+    <title>Quiz 1 - Géographie & Histoire</title>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Quiz 1 — Géographie & Histoire</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text"><span id="currentQuestion">1</span> / <span id="totalQuestions">5</span></p>
+        </div>
+
+        <div class="quiz-content">
+            <div id="quizBox" class="quiz-box">
+                <h2 id="questionText" class="question"></h2>
+                <div id="optionsContainer" class="options-container"></div>
+            </div>
+
+            <div id="resultBox" class="result-box hidden">
+                <h2>Quiz Terminé!</h2>
+                <div class="score">
+                    <p class="score-text">Votre score:</p>
+                    <p class="score-value"><span id="finalScore">0</span>/<span id="maxScore">5</span></p>
+                </div>
+                <p class="result-percentage"><span id="percentage">0</span>%</p>
+                <div class="result-btns">
+                    <button id="restartBtn" class="btn-restart">Recommencer</button>
+                    <a href="index.html" class="btn-restart btn-home">Accueil</a>
+                    <a href="quiz2.html" class="btn-restart btn-next">Quiz suivant →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-footer">
+            <button id="prevBtn" class="btn-nav" disabled>← Précédent</button>
+            <button id="nextBtn" class="btn-nav">Suivant →</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Dans quel pays Kingston est la capitale ?",
+                options: ["Nouvelle-Zélande", "Jamaïque", "Afrique du Sud", "États-Unis"],
+                answer: "Jamaïque"
+            },
+            {
+                question: "Qui a créé la première bombe nucléaire ?",
+                options: ["Albert Einstein", "Marie Curie", "J. Robert Oppenheimer", "Kim Jong-un"],
+                answer: "J. Robert Oppenheimer"
+            },
+            {
+                question: "Dans quel pays peut-on retrouver la fameuse ancienne cité inca du Machu Picchu ?",
+                options: ["Brésil", "Argentine", "Australie", "Pérou"],
+                answer: "Pérou"
+            },
+            {
+                question: "En quelle année l'esclavage fut-il aboli aux États-Unis ?",
+                options: ["1885", "1865", "1911", "1786"],
+                answer: "1865"
+            },
+            {
+                question: "Où a-t-on enregistré la température la plus élevée jamais enregistrée sur Terre ?",
+                options: ["Dans le désert du Sahara", "Dans la vallée de la mort aux USA", "Dans les Badlands en Australie", "À Ahvaz, Iran"],
+                answer: "Dans la vallée de la mort aux USA"
+            }
+        ];
+
+        let currentIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+        const currentQuestionEl = document.getElementById('currentQuestion');
+        const quizBox = document.getElementById('quizBox');
+        const resultBox = document.getElementById('resultBox');
+        const finalScore = document.getElementById('finalScore');
+        const percentage = document.getElementById('percentage');
+        const restartBtn = document.getElementById('restartBtn');
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            questionText.textContent = q.question;
+            optionsContainer.innerHTML = '';
+            currentQuestionEl.textContent = currentIndex + 1;
+            progressFill.style.width = ((currentIndex + 1) / questions.length * 100) + '%';
+
+            q.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.classList.add('option');
+                btn.textContent = option;
+
+                if (userAnswers[currentIndex] !== null) {
+                    if (option === q.answer) btn.classList.add('correct');
+                    else if (option === userAnswers[currentIndex]) btn.classList.add('incorrect');
+                    btn.disabled = true;
+                }
+
+                btn.addEventListener('click', () => selectAnswer(option, q.answer));
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.textContent = currentIndex === questions.length - 1 ? 'Terminer' : 'Suivant →';
+        }
+
+        function selectAnswer(selected, correct) {
+            if (userAnswers[currentIndex] !== null) return;
+            userAnswers[currentIndex] = selected;
+
+            document.querySelectorAll('.option').forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) btn.classList.add('correct');
+                else if (btn.textContent === selected) btn.classList.add('incorrect');
+            });
+        }
+
+        function showResult() {
+            const score = userAnswers.filter((ans, i) => ans === questions[i].answer).length;
+            quizBox.classList.add('hidden');
+            document.querySelector('.quiz-footer').classList.add('hidden');
+            resultBox.classList.remove('hidden');
+            finalScore.textContent = score;
+            percentage.textContent = Math.round(score / questions.length * 100);
+
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                fetch('/score', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, quizId: 1, score, total: questions.length })
+                });
+            }
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) { currentIndex--; renderQuestion(); }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < questions.length - 1) { currentIndex++; renderQuestion(); }
+            else showResult();
+        });
+
+        restartBtn.addEventListener('click', () => {
+            currentIndex = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            quizBox.classList.remove('hidden');
+            document.querySelector('.quiz-footer').classList.remove('hidden');
+            resultBox.classList.add('hidden');
+            renderQuestion();
+        });
+
+        renderQuestion();
+    </script>
+</body>
+</html>

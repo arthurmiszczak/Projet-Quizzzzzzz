@@ -85,3 +85,32 @@ app.post('/connexion', (req, res) => {
       
     });
 });
+app.post('/score', (req, res) => {
+    const { userId, quizId, score, total } = req.body;
+
+    if (!userId || !quizId || score === undefined) {
+        return res.status(400).json({ message: 'Données manquantes' });
+    }
+
+    connection.query(
+        'INSERT INTO Scores (userId, quizId, score, total) VALUES (?, ?, ?, ?)',
+        [userId, quizId, score, total],
+        (err, results) => {
+            if (err) {
+                console.error('Erreur sauvegarde score :', err);
+                return res.status(500).json({ message: 'Erreur serveur' });
+            }
+            res.json({ message: 'Score sauvegardé !', scoreId: results.insertId });
+        }
+    );
+});
+app.get('/scores/:userId', (req, res) => {
+    connection.query(
+        'SELECT * FROM Scores WHERE userId = ? ORDER BY createdAt DESC',
+        [req.params.userId],
+        (err, results) => {
+            if (err) return res.status(500).json({ message: 'Erreur serveur' });
+            res.json(results);
+        }
+    );
+});
