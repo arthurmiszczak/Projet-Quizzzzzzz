@@ -5,73 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css' href='main.css'>
     <title>Projet-Quizzzzzzz</title>
-    <style>
-        .quiz-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            padding: 40px 30px;
-        }
-        .quiz-card {
-            background: white;
-            border: 1px solid #e8eaed;
-            border-radius: 10px;
-            padding: 24px 16px;
-            text-align: center;
-            text-decoration: none;
-            color: #1a1a1a;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        .quiz-card:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 2px 12px rgba(59,130,246,0.15);
-            transform: translateY(-2px);
-        }
-        .quiz-card .quiz-number {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-        .quiz-card h3 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 6px;
-        }
-        .quiz-card p {
-            font-size: 12px;
-            color: #5f6368;
-        }
-        .welcome-header {
-            padding: 32px 30px 0;
-            text-align: center;
-        }
-        .welcome-header h2 {
-            font-size: 20px;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-        .welcome-header p {
-            font-size: 14px;
-            color: #5f6368;
-        }
-        .result-btns {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .btn-home {
-            background: #5f6368;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-next {
-            background: #10b981;
-            text-decoration: none;
-            display: inline-block;
-        }
-    </style>
+
 </head>
 <body>
     <!-- Modal de connexion/inscription -->
@@ -88,16 +22,17 @@
             <form id="signupForm" class="auth-form">
                 <input type="email" id="login" placeholder="Email" required>
                 <input type="password" id="password" placeholder="Mot de passe" required>
-                <button type="submit" id="monBouton" class="auth-btn">Se connecter</button>
+                <button type="button" id="monBouton" class="auth-btn">Se connecter</button>
             </form>
 
             <form id="loginForm" class="auth-form active">
                 <input type="email" id="login2" placeholder="Email" required>
                 <input type="password" id="password2" placeholder="Mot de passe" required>
-                <button type="submit" id="monBouton2" class="auth-btn">S'inscrire</button>
+                <button type="button" id="monBouton2" class="auth-btn">S'inscrire</button>
             </form>
         </div>
     </div>
+    <button id="decoBtn">Déconnexion</button>
 
     <div class="quiz-container">
         <div class="quiz-header">
