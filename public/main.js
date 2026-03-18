@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const decoBtn = document.getElementById('decoBtn');
 
     // Vérifier si connecté
-    if (localStorage.getItem('userId')) {
+    if (localStorage.getItem('login')) {
         authModal.classList.add('hidden');
         decoBtn.style.display = 'block';
     } else {
@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Déconnexion
     decoBtn.addEventListener('click', () => {
-        localStorage.removeItem('userId');
+        localStorage.removeItem('login');
+        localStorage.removeItem('password');
         authModal.classList.remove('hidden');
         decoBtn.style.display = 'none';
     });
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Gestion des formulaires
+    // Inscription
     monBouton2.addEventListener('click', () => {
         fetch('/register', {
             method: 'POST',
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
+    // Connexion
     monBouton.addEventListener('click', () => {
         fetch('/connexion', {
             method: 'POST',
@@ -67,7 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }).then(response => response.json())
             .then(data => {
                 if (data.user) {
-                    localStorage.setItem('userId', data.user.id);
+                    localStorage.setItem('login', data.user.login);       // ← login
+                    localStorage.setItem('password', data.user.password); // ← password haché
                     authModal.classList.add('hidden');
                     decoBtn.style.display = 'block';
                 } else {
