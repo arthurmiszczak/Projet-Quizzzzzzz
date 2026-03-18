@@ -40,7 +40,7 @@ app.post('/register', (req, res) => {
     }
 
     connection.query(
-      'INSERT INTO Users (login, password) VALUES (?, ?)',
+      'INSERT INTO Users (login,password) VALUES (?, sha1(?))',
       [req.body.login, req.body.password],
       (err, results) => {
         if (err) {
@@ -70,7 +70,7 @@ app.get('/users', (req, res) => {
 
 app.post('/connexion', (req, res) => {  
   const { login, password } = req.body;
-  connection.query('SELECT * FROM Users WHERE login = ? AND password = ?', [login, password], (err, results) => {
+  connection.query('SELECT * FROM Users WHERE login = ? AND password = sha1(?)', [login, password], (err, results) => {
       if (err) {
         console.error('Erreur lors de la vérification des identifiants :', err);
         res.status(500).json({ message: 'Erreur serveur' });
