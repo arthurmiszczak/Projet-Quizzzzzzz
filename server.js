@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql2');
 const port = 3002;
+
 const connection = mysql.createConnection({
     host: '172.29.16.164',
     user: 'Demo',
@@ -18,7 +19,6 @@ connection.on('error', (err) => {
 app.use(express.json());
 app.use(express.static('public'));
 
-
 const server = app.listen(port, () => {
     console.log(`🚀 Server running on http://localhost:${port}`);
 });
@@ -33,24 +33,37 @@ app.post('/register', (req, res) => {
     console.log('Données reçues pour l\'inscription');
     console.log(req.body);
     const { login, password } = req.body;
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(login)) {
-        res.status(400).json({ message: 'Email invalide, il doit contenir un @' });
-        return;
+        return res.status(400).json({ message: 'Email invalide, il doit contenir un @' });
     }
 
+    // ← Vérifier si le login existe déjà
     connection.query(
-      'INSERT INTO Users (login,password) VALUES (?, sha1(?))',
-      [req.body.login, req.body.password],
-      (err, results) => {
-        if (err) {
-          console.error('Erreur lors de l\'insertion dans la base de données :', err);
-          res.status(500).json({ message: 'Erreur serveur' });
-          return;
+        'SELECT * FROM Users WHERE login = ?',
+        [login],
+        (err, results) => {
+            if (err) return res.status(500).json({ message: 'Erreur serveur' });
+
+            if (results.length > 0) {
+                return res.status(400).json({ message: 'Ce compte existe déjà !' });
+            }
+
+            // Login disponible → on insère
+            connection.query(
+                'INSERT INTO Users (login, password) VALUES (?, sha1(?))',
+                [login, password],
+                (err, results) => {
+                    if (err) {
+                        console.error('Erreur lors de l\'insertion dans la base de données :', err);
+                        return res.status(500).json({ message: 'Erreur serveur' });
+                    }
+                    console.log('Insertion réussie, ID utilisateur :', results.insertId);
+                    res.json({ message: 'Inscription réussie !', userId: results.insertId });
+                }
+            );
         }
-        console.log('Insertion réussie, ID utilisateur :', results.insertId);
-        res.json({ message: 'Inscription réussie !', userId: results.insertId });
-      }
     );
 });
 
@@ -59,32 +72,33 @@ app.get('/users', (req, res) => {
     connection.query('SELECT * FROM Users', (err, results) => {
         if (err) {
             console.error('Erreur lors de la récupération des utilisateurs :', err);
-            res.status(500).json({ message: 'Erreur serveur' });
-            return;
+            return res.status(500).json({ message: 'Erreur serveur' });
         }
         res.json(results);
     });
 });
 
 
+app.post('/connexion', (req, res) => {
+    const { login, password } = req.body;
 
-app.post('/connexion', (req, res) => {  
-  const { login, password } = req.body;
-  connection.query('SELECT * FROM Users WHERE login = ? AND password = sha1(?)', [login, password], (err, results) => {
-      if (err) {
-        console.error('Erreur lors de la vérification des identifiants :', err);
-        res.status(500).json({ message: 'Erreur serveur' });
-        return;
-      }
-      if (results.length === 0) {
-        res.status(401).json({ message: 'Identifiants invalides' });
-        return;
-      }
-      // Identifiants valides 
-      res.json({ message: 'Connexion réussie !', user: results[0] });
-      
-    });
+    connection.query(
+        'SELECT * FROM Users WHERE login = ? AND password = sha1(?)',
+        [login, password],
+        (err, results) => {
+            if (err) {
+                console.error('Erreur lors de la vérification des identifiants :', err);
+                return res.status(500).json({ message: 'Erreur serveur' });
+            }
+            if (results.length === 0) {
+                return res.status(401).json({ message: 'Identifiants invalides' });
+            }
+            res.json({ message: 'Connexion réussie !', user: results[0] });
+        }
+    );
 });
+
+
 app.post('/score', (req, res) => {
     const { userId, quizId, score, total } = req.body;
 
@@ -104,6 +118,8 @@ app.post('/score', (req, res) => {
         }
     );
 });
+
+
 app.get('/scores/:userId', (req, res) => {
     connection.query(
         'SELECT * FROM Scores WHERE userId = ? ORDER BY createdAt DESC',
