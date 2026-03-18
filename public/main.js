@@ -12,6 +12,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const Inputpassword2 = document.getElementById('password2');
     const monBouton = document.getElementById('monBouton');
     const monBouton2 = document.getElementById('monBouton2');
+<<<<<<< HEAD
+=======
+
+    // Créer le bouton déconnexion
+    const decoBtn = document.createElement('button');
+    decoBtn.textContent = 'Déconnexion';
+    decoBtn.style.cssText = `
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        z-index: 999;
+        transition: background 0.2s ease;
+    `;
+    decoBtn.addEventListener('mouseover', () => decoBtn.style.background = '#dc2626');
+    decoBtn.addEventListener('mouseout', () => decoBtn.style.background = '#ef4444');
+    document.body.appendChild(decoBtn);
+>>>>>>> parent of d10ff0d (tout fonctionnel avec boutton deconnexion)
 
     // Créer le bouton déconnexion
     const decoBtn = document.createElement('button');
@@ -69,7 +94,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+<<<<<<< HEAD
     // Inscription
+=======
+    // Gestion des formulaires
+>>>>>>> parent of d10ff0d (tout fonctionnel avec boutton deconnexion)
     monBouton2.addEventListener('click', (e) => {
         e.preventDefault();
         fetch('/register', {
@@ -82,7 +111,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
+<<<<<<< HEAD
     // Connexion
+=======
+>>>>>>> parent of d10ff0d (tout fonctionnel avec boutton deconnexion)
     monBouton.addEventListener('click', (e) => {
         e.preventDefault();
         fetch('/connexion', {
